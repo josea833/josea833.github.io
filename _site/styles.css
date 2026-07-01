@@ -6,7 +6,17 @@
     color: #333;
     margin: 0;
     padding: 20px;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0; /* Clears default browser margins */
 }
+
+/* Let the main content section grow dynamically to use available empty space */
+.main-content {
+  flex: 1;
+}
+
 
 .button {
     display: inline-block;
@@ -23,9 +33,33 @@
 }
 
 .navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     background-color: #00fee9b5;
-    padding: 10px auto;
     border-radius: 5px;
+    padding: 10px 20px;
+}
+
+.nav-container {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    max-width: 1200px;
+    flex: 1;
+    justify-content: flex-end;
+}
+
+.nav-earth {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin-left: 0;
+    position: relative;
+    width: 75px;
+    height: 75px;
+    perspective: 1000px;
+    transform-style: preserve-3d;
 }
 
 .nav-links {
@@ -40,20 +74,12 @@
     padding: 5px 10px;
 }
 
-.nav-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    max-width: 1200px;
-    margin: 0 auto;
-    height: 60px;
-}
-
 .footer {
     background-color: #00fee9b5;
     border-radius: 5px;
     margin-top: 40px;
     padding: 20px;
+    margin-top: auto;
 }
 
 .footer-container {
@@ -96,3 +122,100 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+.earth {
+    position: absolute;
+    width: 75px;
+    height: 75px;
+    background-image: url(world.jpg);
+    background-size: cover;
+    background-repeat: repeat-x;
+    box-shadow: 
+        0 0 5px #fff,
+        0 0 10px #ff007f; /* Primary neon color (Pink) */
+
+    border-radius: 50%;
+    animation: rotateEarth 15s linear infinite;
+    transform: translateZ(0);
+    overflow: hidden;
+}
+
+.circleText {
+    --total: 5;
+    --orbit-radius: 54px;
+    --letter-size: 13px;
+    position: absolute;
+    top: 25%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    transform-origin: center center;
+    transform-style: preserve-3d;
+    animation: animateText 10s linear infinite;
+    transform: translateZ(0);
+    pointer-events: none;
+}
+
+.circleText span {
+    position: absolute;
+    border-radius: 50%;
+    top: 0;
+    left: 0;
+    font-family: 'Arial Black', sans-serif;
+    font-size: 5rem;
+    font-weight: 900;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    /* Stacking multiple text-shadows creates the glow */
+    text-shadow: 
+        0 0 5px #fff,
+        0 0 10px #fff,
+        0 0 20px #ff007f, /* Primary neon color (Pink) */
+        0 0 40px #ff007f,
+        0 0 80px #ff007f,
+        0 0 120px #ff007f;
+        
+    /* Adds a realistic, subtle flicker effect */
+    animation: flicker 1.5s infinite alternate;
+    font-size: var(--letter-size);
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    transform-origin: center;
+    transform-style: preserve-3d;
+    padding: 2px 0px;
+    transform: rotateY(calc(var(--angle) * calc(360deg / var(--total))))
+    translateZ(var(--orbit-radius));
+
+} 
+@keyframes animateText {
+    0% {
+        transform: rotateY(360deg) rotateX(15deg) translateY(-30%);
+    }
+    100% {
+        transform: rotateY(0deg) rotateX(15deg) translateY(-30%);
+    }
+}  
+@keyframes rotateEarth {
+    0% {
+        background-position: 0 0;
+    }
+    100% {
+        background-position: -595px 0;
+    }
+}
+/* Keyframes to animate the neon pulse */
+@keyframes flicker {
+  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+    text-shadow: 
+      0 0 5px #fff,
+      0 0 10px #fff,
+      0 0 20px #ff007f,
+      0 0 40px #ff007f,
+      0 0 80px #ff007f,
+      0 0 120px #ff007f;
+  }
+  20%, 24%, 55% {        
+    text-shadow: none; /* Briefly removes the glow to mimic a real gas tube */
+    color: #444;       /* Dims the text color during the flicker */
+  }
+}
